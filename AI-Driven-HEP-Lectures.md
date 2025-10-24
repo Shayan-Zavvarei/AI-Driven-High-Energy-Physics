@@ -65,3 +65,75 @@ In other words, end-to-end learning from raw observables could serve not just as
 
 
 ## Session 2: Towaed the Summit
+
+This material summarizes **Session 2** of the **AI-Driven HEP Introduction**, presented by S. A. Fard from the School of Physics (IPM). The session is titled **"Toward The Summit"**.
+
+### 1. The Chess Analogy: Finding the Simplest Architecture
+
+Session 2 begins by framing the discussion around artificial intelligence using the game of chess: **"Let's play chess"**.
+
+The initial challenge posed is: **"Find the simplest architecture for a machine playing chess?"**.
+
+#### 1.1 Brute-Force Optimization (MiniMax)
+
+The foundational architectural concept introduced is **Brute-force MiniMax optimisation**.
+
+However, implementing brute-force search quickly reveals complexity challenges:
+
+- To **predict 5 moves ahead**, the number of possible positions falls within the **order of** $\sim 30^{10} \sim 10^{14}$.
+- The sources comment that this brute-force method, while simple, is **"made it as simple as possible, but not simplest"**.
+
+#### 1.2 Increasing Complexity: Optimization Techniques
+
+The next step is to **"take one step forward and make the architecture more complex?"**.
+
+The optimization technique introduced is **Alpha–beta pruning**. This technique is described as cutting off **"branches that cannot possibly affect the final decision"**.
+
+The complexity reduction achieved by Alpha–beta pruning is significant, reducing the required calculation order to **order of** $\sim 10^{7}$.
+
+#### 1.3 Incorporating Human Strategy and Cost
+
+Further development involves integrating human-like strategic knowledge, such as **Opening tips** and **Ending Moves**.
+
+The cost of computing power over time is briefly compared:
+
+- **1990**: Computing costs were around $\sim 10^6\ \$$.
+- **2020**: Computing costs dropped significantly to around $\sim 10^3\ \$$.
+
+This comparison leads to **Exe 2-1: Estimate GPU cost in the near future**.
+
+### 2. The Go Analogy and Modern AI
+
+The session then moves to applying a **"similar procedure for playing Go!"**.
+
+The complexity of Go far exceeds that of chess:
+
+- The required calculation order for Go is estimated at **order of** $\sim 200^{10} \sim 10^{23}$.
+
+The concept of modern, data-driven Go AI is referenced, citing the Google DeepMind project:  
+[https://deepmind.google/research/projects/alphago/](https://deepmind.google/research/projects/alphago/).
+
+Key elements of this AI approach include calculating probability:
+
+- **The probability of moves $a$ at position $s$: $p_{\sigma}(a \mid s)$**.
+- Referenced probability orders include **order of 50%**, **order of 80%**, and **order of 20%**.
+
+This discussion sets up **Exe 2-2: Implement the MCTS via a simple Python code**.
+
+### 3. The Core Idea of AI
+
+The session concludes by defining the **Core idea of AI**.
+
+The primary goal of AI is to **"make machine behave like human"**. This goal can be achieved through two primary approaches:
+
+1. **Rule-based**  
+2. **Data-based**
+
+In other words, AI involves **"solving tasks that require intelligence, sometimes beyond human style"**.
+
+The sources offer a direct comparison between the advancement of traditional Science and the advancement of AI:
+
+| Field    | Advancement Method                                                                 |
+|----------|------------------------------------------------------------------------------------|
+| Science  | Advanced by inventing new experimental techniques to build theories from data.     |
+| AI       | Advanced by inventing new learning algorithms to extract knowledge from data.      |
