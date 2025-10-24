@@ -73,7 +73,7 @@ This material summarizes **Session 2** of the **AI-Driven HEP Introduction**, pr
 Session 2 begins by framing the discussion around artificial intelligence using the game of chess: **"Let's play chess"**.
 
 The initial challenge posed is: **"Find the simplest architecture for a machine playing chess?"**.
-
+![Chess](photos/chess.png)
 #### 1.1 Brute-Force Optimization (MiniMax)
 
 The foundational architectural concept introduced is **Brute-force MiniMax optimisation**.
@@ -132,7 +132,7 @@ The primary goal of AI is to **"make machine behave like human"**. This goal can
 In other words, AI involves **"solving tasks that require intelligence, sometimes beyond human style"**.
 
 The sources offer a direct comparison between the advancement of traditional Science and the advancement of AI:
-
+![Core Idea](photos/coreidea.png)
 | Field    | Advancement Method                                                                 |
 |----------|------------------------------------------------------------------------------------|
 | Science  | Advanced by inventing new experimental techniques to build theories from data.     |
