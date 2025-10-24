@@ -37,23 +37,31 @@ A modern example is referenced via the arXiv paper link: https://arxiv.org/abs/1
 
 ![Modern Example](photos/modern%20example.png)
 
- 
-دنبال نوترینو هست و زیر زمینه
-یه سینلتیتور داره که وقتی نوترینو بر همکنش میکنه باهاش یه سری فوتون تولید میشه و این فوتون ها توسط دیتکتور دیده میشه 
-بیرون کره هم آب هست که پرتوهای بیرون مثل موند رو میگیره که وقتی به آب برخورد میکنن باعث تابش چرنوکوف میشن که بتونیم اون سیگنال ها رو وتو کنیم و درواقع اینجوری میشه دیتای داخل کره و بیرون رو از هم جدا کرد.
-مثلا تو نمودار پیک اول لگد اولیه هست و ده ثانیه بعد نابود شده و پیک دوم رو داده و یک دم داره که نشون دهنده اتمام واکنش هاستو
-خالا ماشین لرنینگ اینجوری و با این منطق میتونه دیتا رو جدا کنه بر اساس فیچر مشخص برخورد پوزیترون و بر اساس شکل سیگناله.
+ In this detector setup, a scintillator is used such that when a neutrino interacts with it, a burst of photons is produced. These photons are then detected by the photosensors inside the detector.
 
+Surrounding the central scintillator volume is a layer of water. This outer water shield helps absorb external radiation—such as cosmic muons—that might otherwise create background signals. When these incoming particles (e.g., muons) enter the water and travel faster than the speed of light in water, they produce Cherenkov radiation. This Cherenkov light can be detected and used to veto events originating from outside the central target volume. In this way, we can effectively distinguish between internal signals (from neutrino interactions) and external background events.
+
+For example, in the observed signal waveform, the first peak corresponds to the initial positron deposit from the neutrino interaction. Approximately 10 microseconds later, the positron annihilates, producing a second peak followed by a characteristic tail—this decay profile reflects the time evolution and completion of the physical process.
+
+Machine learning can leverage this physical understanding to classify events. By using features such as the interaction signature of the positron and the temporal shape of the signal (e.g., peak timing, presence of a delayed tail, pulse width), a model can effectively separate true neutrino-induced events from background or external events.
 ### Summary of Traditional Experiment Pipeline:
 ![Tradition Pipeline](photos/tradition%20pipleline.png)
 
 ### Bridging Tech of SBI
-به این هست که آبزروربل رو میده به یه مدل یا شبکه ای و فیزیک رو هم میدیم بهش  و این مدل رو ترین میکنیم که یاد بگیره اگر آبزروبل فلان بود مدلش فیزیکیش فلانه
-منظور از آبزروبل دیتای خام نیست. مثلا با این روش دیگه کورولیشن فانکشن سی امی بی رو نمیدیم بلکه کل مپ سی ام بی رو میدیم و خروجی مدل فیزیکیش رو میگیریم.
+The core idea is to provide a model or neural network not only with observational data (the "observables") but also with the underlying physical principles. We then train the model to learn the mapping between these observables and the corresponding physical parameters or processes.
+
+Importantly, by "observables" we do not mean raw detector data. Instead, we feed the model higher-level, processed representations—such as full sky maps of the CMB—rather than derived summary statistics like the CMB power spectrum (e.g., the \( C_\ell \) correlation function). The model learns to infer the underlying physics directly from these rich, spatially resolved inputs, and its output is an estimate of the physical parameters or conditions that generated the observed signal.
+
+In essence, the network is trained to answer: “Given this observable map, what physical scenario produced it?”—bypassing traditional intermediate steps and leveraging the full information content of the data.
+
 ![SBI](photos/sbi.png)
 ### What if we reach to the physics directly from raw Data
+What if we feed the network the full raw data directly? Could this approach enable the discovery of new physics?
 
-چی میشه که اگه کل دیتای خام رو بدیم به نتوورک؟ آیا این منجر میشه به پیدا کردن فیزیک جدید؟ 
+By bypassing traditional preprocessing, feature engineering, or summary statistics—and instead giving the model access to the complete, unfiltered dataset—we allow it to identify subtle, non-linear, or previously unrecognized patterns that might be lost in conventional analysis pipelines. If the underlying physical laws leave imprints in the raw data that don’t conform to our current models, a sufficiently expressive and well-trained network might detect these anomalies and point toward physics beyond the standard paradigm.
+
+In other words, end-to-end learning from raw observables could serve not just as a tool for parameter estimation, but as a hypothesis-free probe for new physics.
+
 
 
 ## Session 2: Towaed the Summit
