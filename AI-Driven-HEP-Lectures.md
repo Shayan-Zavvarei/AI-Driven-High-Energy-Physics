@@ -741,3 +741,211 @@ The final concept introduced is the **Simulation-Based Inference (SBI) Framework
 <center>
   <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/sbi-starting.png?raw=true" alt="SBI Starting" width="600"/>
 </center>
+
+## AI-Driven HEP: Session 6 - Statistical Learning
+
+### Title Slide
+
+This session, titled **"Statistical Learning"**, is part of the **AI-Driven High Energy Physics (HEP)** lecture series. It is presented by **S. A. Fard** from the **School of Physics, Institute for Research in Fundamental Sciences (IPM)**.
+
+---
+
+### Core References (Part 1)
+
+The session builds upon foundational and modern textbooks in statistical and machine learning:
+
+- **James, Gareth, et al.** *An Introduction to Statistical Learning: With Applications in Python.* (2023)  
+- **Hastie, Trevor, et al.** *The Elements of Statistical Learning: Data Mining, Inference, and Prediction.* (2009)  
+- **Bishop, Christopher M.** *Pattern Recognition and Machine Learning.* Springer, (2006)  
+- **Chollet, François.** *Deep Learning with Python.* (2021)
+
+These texts provide the theoretical and practical backbone for statistical learning methodologies used across scientific domains, including HEP.
+
+---
+
+### Additional References (Part 2)
+
+Further references include theoretical machine learning resources and domain-specific documents from the **DUNE collaboration**:
+
+- **Shalev-Shwartz, Shai, and Shai Ben-David.** *Understanding Machine Learning: From Theory to Algorithms.* (2014)  
+- **Tingjun Yang,** *A Brief Description of Data Products,* ProtoDUNE Analysis Workshop, CERN (January 27, 2019)  
+- **Gabriela Vitti Stenico,** *Development of the Computing Framework for Monitoring the Quality of ProtoDUNE Off-line Data,* DUNE Collaboration Meeting (2025)
+
+These materials bridge general machine learning theory with real-world applications in particle physics experiments.
+
+---
+
+### hanging the Mindset
+
+Before diving into technical content, a conceptual reset is encouraged:
+
+1. **Take a deep breath**  
+2. **Forget everything you’ve heard so far**  
+3. **“You are going to be a data scientist from now on.”**
+
+This mindset shift emphasizes adopting a data-centric, model-driven perspective essential for modern scientific analysis.
+
+---
+
+### What Is Statistical Learning?
+
+Statistical Learning explores the relationship among three core elements:
+
+- **(Input) $X$**  
+- **(Uncertainty) $\epsilon$**  
+- **(Output) $Y$**
+
+This is often framed as modeling the underlying function $f$ such that:
+$$
+Y = f(X) + \epsilon
+$$
+
+#### Terminology:
+- **Output ($Y$)**: Also known as the **response**, **dependent variable**, or **target**.  
+- **Input ($X$)**: Referred to as **predictors**, **independent variables**, or **features**.
+
+---
+
+### Formal Definition and Learning Framework
+
+**Statistical learning** is formally defined as:
+> “A set of approaches for estimating $f$.”
+
+To operationalize this estimation, a complete learning framework consists of six interconnected components:
+
+1. **Input** – The data fed into the system (e.g., features, measurements)  
+2. **Architecture** – The structure of the model (e.g., neural network, decision tree)  
+3. **Output** – The prediction or result produced by the model  
+4. **Supervision** – Whether labels are provided (supervised vs. unsupervised)  
+5. **Task** – The objective (e.g., classification, regression, clustering)  
+6. **Optimization** – The method used to adjust model parameters (e.g., gradient descent)
+
+These components collectively define how a statistical learning system is designed, trained, and evaluated.
+
+---
+
+### Input Structure
+
+A key practical consideration is: **“What does an input look like?”**
+
+In computational implementations—especially in deep learning—the input is typically represented as a **multidimensional array** (tensor).
+
+Common shapes include:
+
+- `(n, m, l, k)` — General 4D tensor (e.g., batch × height × width × channels)  
+- `(n, 1, 1, k)` — Simplified spatial dimensions (e.g., tabular data reshaped for CNNs)  
+- `kn` — Flattened representation (e.g., vectorized input of length $k \times n$)  
+- `(n, 1, l, k)` — Partially structured input (e.g., time-series or 1D signals with channel depth)
+
+Here:
+- `n` often denotes the **number of samples** (batch size)  
+- Other dimensions (`m`, `l`, `k`) represent spatial, temporal, or feature axes depending on context
+
+Understanding input geometry is crucial for selecting appropriate architectures and preprocessing pipelines.
+
+## AI-Driven HEP: Session 7 - Statistical Learning II
+
+## Title Slide
+
+This session, titled **"Statistical Learning II"**, is the continuation of the **AI-Driven High Energy Physics (HEP)** lecture series. It is presented by **S. A. Fard** from the **School of Physics, Institute for Research in Fundamental Sciences (IPM)**.
+
+---
+
+### References
+
+The session builds on the same foundational literature as Session 6, including both general machine learning texts and HEP-specific resources:
+
+- **James, Gareth, et al.** *An Introduction to Statistical Learning: With Applications in Python.* (2023)  
+- **Hastie, Trevor, et al.** *The Elements of Statistical Learning: Data Mining, Inference, and Prediction.* (2009)  
+- **Bishop, Christopher M.** *Pattern Recognition and Machine Learning.* Springer, (2006)  
+- **Chollet, François.** *Deep Learning with Python.* (2021)  
+- **Shalev-Shwartz, Shai, and Shai Ben-David.** *Understanding Machine Learning: From Theory to Algorithms.* (2014)  
+- **Tingjun Yang,** *A Brief Description of Data Products,* ProtoDUNE Analysis Workshop, CERN (January 27, 2019)  
+- **Gabriela Vitti Stenico,** *Development of the Computing Framework for Monitoring the Quality of ProtoDUNE Off-line Data,* DUNE Collaboration Meeting (2025)
+
+---
+
+### What Does an Input Look Like? — Beyond Regular Grids
+
+While traditional inputs are often represented as dense arrays with shape `(n, m, l, k)` (e.g., images or structured tensors), **real-world scientific data frequently violates this assumption**.
+
+Key challenges arise when:
+- **The organized `(m, l, k)` data format no longer works**  
+- Data becomes **sparse**, **irregular**, or **non-Euclidean**
+
+Examples of such data include:
+- **Sparse images** (e.g., particle detector hits with mostly empty space)  
+- **Sequences of words** (e.g., natural language or symbolic event logs)  
+- **Graphs** (e.g., particle interaction networks, detector geometries)
+
+---
+
+### Graph Format as Input
+
+In many HEP applications, data is naturally represented as a **graph**:
+- **Nodes** represent entities (e.g., detector channels, particles)  
+- **Edges** represent relationships or interactions
+
+A graph is typically described by:
+- **Node feature matrix** `X` (e.g., `X = [47, 18, 13, 56, 36, 32, 99, 54, 2]`)  
+- **Adjacency matrix** `A`, indicating connections between nodes  
+- **Edge attributes** `E`, possibly weighted (e.g., `(11,12): w₂`)
+
+This representation relaxes the rigid grid assumption and allows modeling of **complex relational structures**.
+
+---
+
+### Text Format as Input
+
+Another important input modality is **text**, which appears in metadata, logs, or symbolic representations of events.
+
+Key questions in text modeling:
+- **How much does word order affect understanding?**  
+- **How are word similarities captured?**  
+- **How does context influence meaning?**
+
+Challenges include:
+- **Vocabulary size**: ~10⁵ unique English words vs. ~10¹⁵ total word occurrences on the web  
+- **Semantic similarity**: Words like “electron” and “muon” may be functionally similar in HEP despite different surface forms  
+- **Context dependence**: The same word may have different meanings in different experimental contexts
+
+Text must be transformed from **natural language** into **machine-readable representations** (e.g., embeddings).
+
+---
+
+### Domain of the Data
+
+Regardless of format (array, graph, or text), all inputs are assumed to originate from a **data domain** characterized by:
+
+- **Distribution**: The underlying probability distribution from which data is drawn  
+- **Uncertainty**: Inherent noise or variability in observations  
+- **I.I.D. assumption**: Data points are often assumed to be **Independent and Identically Distributed**—though this may not hold in HEP (e.g., correlated detector noise, systematic shifts)
+
+---
+
+### Prediction (Inference) and Model Evaluation
+
+The ultimate goal of statistical learning is **prediction** (or **inference**): using a learned model to make accurate predictions on new, unseen data.
+
+Key theoretical concepts include:
+- **Maximum Likelihood Estimation (MLE)**: Under Gaussian noise assumptions, MLE reduces to **minimizing the squared error loss**  
+- **Bias-Variance Tradeoff**: A fundamental tension between:
+  - **Bias**: Error from oversimplifying the model  
+  - **Variance**: Error from overfitting to training data
+
+Balancing this tradeoff is essential for **generalization**—ensuring models perform well beyond the training set.
+
+---
+
+### Incompleteness and Generalization
+
+Real-world datasets are often:
+- **Incomplete** (missing features, partial observations)  
+- **Non-stationary** (domain shifts over time or between experiments)
+
+Thus, robust statistical learning in HEP requires:
+- Careful validation strategies  
+- Domain adaptation techniques  
+- Uncertainty quantification in predictions
+
+These considerations ensure that models remain **reliable, interpretable, and physically meaningful** in high-stakes scientific contexts.
