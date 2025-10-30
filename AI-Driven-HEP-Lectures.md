@@ -560,3 +560,184 @@ In the ideal case, the amplitude follows a Gaussian distribution, and the noise 
 <center>
   <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/signal-integration.png?raw=true" alt="Signal Integration" width="600"/>
 </center>
+
+
+## Comprehensive Analysis of Statistical Concepts: Tutorial 2- Dr.Jalali's presentation
+
+### Slide 1: Data Modeling, Parameter Estimation, and Optimization
+
+This initial slide sets the stage for scientific inference by posing the core methodological challenges:
+
+<center>
+  <img src=photos/parameter-estimation.png
+</center>
+
+1. **Data Modeling:** The key objective is to determine **"How can this observation be described using a given physical model M with free parameters $\theta$?"**. The parameters ($\theta$) are the unknown variables of interest within the model.
+2. **Criterion:** To assess the validity of the model, a **"criterion for assessing the similarity between data and model"** must be established. This metric quantifies **"How well the model predicts the observed data?"**.
+3. **Optimization:** The ultimate goal is **Optimization**, which aims to find the **"Best Value"** for the parameters $\theta$ by optimizing the defined criterion (e.g., maximizing similarity or minimizing a loss function).
+4. **Error Estimation:** After the best parameter value is found, **Error Estimation** is required to quantify the uncertainty associated with the determined values of $\theta$.
+5. **Probabilistic Approach Introduction:** The solution framework begins with the **Probabilistic Approach**. This approach is founded on the concept of the **Likelihood**, which is defined as the **"Probability of observing the data given a specific parameter value"**.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/parameter-estimation-app.png?raw=true" alt="Parameter Estimation App" width="600"/>
+</center>
+
+center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/estimating-resistance-1.png?raw=true" alt="Estimating Resistance 1" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/estimating-resistance-2.png?raw=true" alt="Estimating Resistance 2" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/estimating-resistance-3.png?raw=true" alt="Estimating Resistance 3" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/estimating-resistance-4.png?raw=true" alt="Estimating Resistance 4" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/error-estimation-1.png?raw=true" alt="Error Estimation 1" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/error-estimation-2.png?raw=true" alt="Error Estimation 2" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/error-estimation-3.png?raw=true" alt="Error Estimation 3" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/error-estimation-4.png?raw=true" alt="Error Estimation 4" width="600"/>
+</center>
+
+### Slide 2: Probabilistic Approach, Central Limit Theorem, and Machine Learning
+
+The second segment expands on the probabilistic foundation and links it to computational methods.
+
+- **Likelihood and CLT:** The **Likelihood**—the probability $P(\text{Data} \mid \theta)$—is the central tool in the probabilistic approach. The **Central Limit Theorem** (CLT) is mentioned in this context, often serving as the theoretical justification for assuming a **Gaussian Likelihood** when dealing with errors resulting from the sum of many independent random effects.
+- **Machine Learning as Optimization:** The source clearly states that **"Machine Learning Is Nothing But Optimization"**. In training a model, the goal is to optimize a **Loss Function** using **"Training Data + Labels"**. The data flows through **Input** components and **Hidden Layers** to generate **Outputs** which are compared against the **Labels**.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/machine-learning.png?raw=true" alt="Machine Learning" width="600"/>
+</center>
+
+### Slides 2–4: Frequentist Approach vs. Bayesian Approach Comparison
+
+The subsequent slides delineate the fundamental philosophical and practical differences between the two major schools of statistical inference:
+
+| Aspect | Frequentist Approach | Bayesian Approach |
+| :--- | :--- | :--- |
+| **Philosophy** | **Parameters ($\theta$) are fixed but unknown constants**; randomness stems exclusively from the data. | **Parameters are random variables** characterized by probability distributions. |
+| **Probability Interpretation** | Defined as the **"Long-run frequency of outcomes over repeated experiments"**. | Represents the **"Degree of belief or uncertainty about parameters,"** which is noted to align better with intuitive understanding. |
+| **Parameters ($\theta$)** | Treated as **fixed, unknown quantities**. | Treated as **random variables with prior distributions**. |
+| **Prior Information** | **Not used**; inference is based **solely on data**. | **Explicitly included** in the analysis. |
+| **Core Objective** | To **"Estimate $\theta$ using data only"**. | To **"Update prior distribution to posterior using data"**. |
+| **Hypothesis Testing** | Based on **p-values and rejection of null hypotheses**. | Based on **posterior probabilities and model comparison** (e.g., Bayes factor). |
+| **Common Tools** | **MLE** (Maximum Likelihood Estimation), **confidence intervals, p-values, likelihood ratio tests**. | **Bayes’ theorem, priors, posteriors, MCMC, variational inference**. |
+| **Computation** | Often **simpler and faster**; analytic solutions available for many problems. | Can be **computationally intensive, especially in high dimensions**. |
+| **Typical Use Cases** | **Classical experiments, large-sample statistics, regulated fields** (e.g., pharma). | **Complex models, small datasets, simulation-based inference, hierarchical models**. |
+
+### Slide 5: The Bayesian Approach and Bayes' Theorem
+
+This slide formalizes the structure of Bayesian inference. The process involves **Observation, Adopting Model, and Estimating Parameters**.
+
+Bayes' theorem defines the relationship between the three core probabilistic components:
+
+$$
+\text{Posterior} \propto \text{Likelihood} \times \text{Prior}
+$$
+
+1. **Prior Distribution (Prior):** This represents **"Your initial belief about a parameter before seeing any data"**.
+2. **Likelihood:** This is the **"Probability of observing the data given a specific parameter value"** ($P(\text{Data} \mid \theta)$).
+3. **Posterior Distribution (Posterior):** This represents **"Your updated belief about the parameter after seeing the data"** ($P(\theta \mid \text{Data})$).
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/bayesian-inference.png?raw=true" alt="Bayesian Inference" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/likelihood-scheme.png?raw=true" alt="Likelihood Scheme" width="600"/>
+</center>
+
+### Slide 6: Traditional Bayesian Inference and Analytical Solutions
+
+This section addresses the requirements and initial methods of calculating the posterior.
+
+- **Traditional Requirement:** Classical Bayesian methods (Traditional Bayesian Inference) necessitate **"an explicit analytical form of how the data depends on the parameters $\theta$ in order to compute the likelihood"**.
+- **Analytical Solution:** This is a **"closed-form approach to compute the posterior distribution exactly"**. It is only applicable when both the **prior and likelihood are mathematically tractable**.
+- **Grid-based Methods:** These involve **discretizing the parameter space into a grid** and **evaluating the posterior at each point**. They are considered **simple and intuitive** and **useful for low-dimensional problems**, but they are **computationally expensive in high dimensions**.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/bayesian-limitation.png?raw=true" alt="Bayesian Limitation" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/bayesian-limitation2.png?raw=true" alt="Bayesian Limitation 2" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/bayesian-limitation3.png?raw=true" alt="Bayesian Limitation 3" width="600"/>
+</center>
+
+### Slide 7: Approximate and Sampling Methods
+
+When analytical or grid-based solutions are infeasible, approximate and sampling methods are utilized:
+
+1. **Variational Inference (VI):** This is an **approximate Bayesian inference method**. It works by **replacing a complex posterior distribution with a simpler, parameterized distribution** and then **optimizing that approximation**.
+2. **Sampling-Based Methods:** These methods aim to **approximate the posterior distribution by generating a large number of representative samples from it**.
+    - Sub-categories include **Rejection Sampling**, **Importance Sampling**, and **MCMC Methods** (Markov Chain Monte Carlo).
+    - Key MCMC algorithms are listed: **Metropolis-Hastings**, **Gibbs Sampling**, **Hamiltonian Monte Carlo (HMC)**, and **NUTS (No-U-Turn Sampler)**.
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/metropolis.png?raw=true" alt="Metropolis" width="600"/>
+</center>
+
+
+### Slides 8–9: Simulation-Based Inference (SBI) Framework
+
+The final concept introduced is the **Simulation-Based Inference (SBI) Framework**, designed for models where the likelihood cannot be computed explicitly.
+
+- **Gaussian Likelihood Justification:** The **Gaussian likelihood** is often justified by the **Central Limit Theorem**. The **Metropolis-Hastings Markov Chain Monte Carlo (MCMC)** method is noted as a core tool for sampling the **Estimated Posterior**.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/gaussian-likelihood.png?raw=true" alt="Gaussian Likelihood" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/metro-fig1.png?raw=true" alt="Metro Fig 1" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/metro-fig2.png?raw=true" alt="Metro Fig 2" width="600"/>
+</center>
+
+- **Forward Modeling:** This is the starting point for SBI. It describes the process of generating data $D$ (or a **summary statistic**) given a set of parameters $\theta$, represented as $D(\theta)$.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/forward-modeling.png?raw=true" alt="Forward Modeling" width="600"/>
+</center>
+
+- **Emulators (Surrogate Models):** These models are used to mimic or replace the complex forward model $D(\theta)$. They take the parameter $\theta$ as **Input** and typically involve **Hidden Layers** to produce the simulated **Outputs**.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/emulators.png?raw=true" alt="Emulators" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/emulators2.png?raw=true" alt="Emulators 2" width="600"/>
+</center>
+
+- **Inference Pipeline:** In SBI, parameters are first sampled from the **Prior**. The parameters are fed into the **Forward Modeling** or **Emulators** to generate a **summary statistic**. This summary statistic is then compared to the **Observation** using an **Inference** technique (e.g., **MCMC**) to yield a **Posterior sample**.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/sbi-framework.png?raw=true" alt="SBI Framework" width="600"/>
+</center>
+
+- **Conclusion:** The process concludes with an acknowledgment of the **Assumed Likelihood** used in the analysis.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/sbi-starting.png?raw=true" alt="SBI Starting" width="600"/>
+</center>
