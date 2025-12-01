@@ -949,3 +949,466 @@ Thus, robust statistical learning in HEP requires:
 - Uncertainty quantification in predictions
 
 These considerations ensure that models remain **reliable, interpretable, and physically meaningful** in high-stakes scientific contexts.
+
+# Session 8: Linear Regression  
+**AI-Driven High Energy Physics (HEP)**  
+*S. A. Fard – School of Physics (IPM)*
+
+## References
+1. James, Gareth, et al. *An Introduction to Statistical Learning: With Applications in Python* (2023)  
+2. Hastie, Trevor, et al. *The Elements of Statistical Learning: Data Mining, Inference, and Prediction* (2009)  
+3. Bishop, Christopher M. *Pattern Recognition and Machine Learning* (2006)  
+4. Chollet, François. *Deep Learning with Python* (2021)  
+5. Shalev-Shwartz, Shai, and Shai Ben-David. *Understanding Machine Learning: From Theory to Algorithms* (2014)
+
+---
+
+## Why Use Linear Regression?
+
+- **Baseline Model for Comparison**: Serves as a simple, interpretable benchmark.
+- **Fast and Computationally Efficient**: Closed-form solution enables rapid fitting.
+- **Good Approximation of Local Relationships**: Works well when the true relationship is approximately linear in the region of interest.
+
+---
+
+## Simple Linear Regression
+
+The model assumes a linear relationship between one predictor $X$ and response $Y$:
+
+$$
+Y = \beta_0 + \beta_1 X + \varepsilon
+$$
+
+- $\beta_0$: intercept  
+- $\beta_1$: slope  
+- $\varepsilon$: random error term (often assumed $\varepsilon \sim \mathcal{N}(0, \sigma^2)$)
+
+### Estimating the Coefficients
+
+Two standard approaches:
+- **Least Squares Estimation (LSE)**: Minimizes the sum of squared residuals.
+- **Maximum Likelihood Estimation (MLE)**: Equivalent to LSE under Gaussian noise.
+تفاوت لیست اسکور و ماکسموم لایکلیهود چیه  دقیقا؟
+### Residual Sum of Squares (RSS)
+
+$$
+\text{RSS} = \sum_{i=1}^n (y_i - \hat{y}_i)^2 = \sum_{i=1}^n (y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)^2
+$$
+
+Define:
+- $S_{xx} = \sum_i (x_i - \bar{x})^2$
+- $S_{xy} = \sum_i (x_i - \bar{x})(y_i - \bar{y})$
+- $S_{yy} = \sum_i (y_i - \bar{y})^2$
+
+Then:
+$$
+\hat{\beta}_1 = \frac{S_{xy}}{S_{xx}}, \quad \hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}
+$$
+
+---
+
+## Multiple Linear Regression
+
+Extends simple regression to $p-1$ predictors:
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \cdots + \beta_{p-1} X_{p-1} + \varepsilon
+$$
+
+In matrix form:
+$$
+\mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+$$
+
+Where:
+- $\mathbf{Y}$: $n \times 1$ response vector  
+- $\mathbf{X}$: $n \times p$ design matrix (first column = 1s for intercept)  
+- $\boldsymbol{\beta}$: $p \times 1$ coefficient vector  
+- $\boldsymbol{\varepsilon}$: $n \times 1$ error vector, $\varepsilon_i \overset{\text{iid}}{\sim} \mathcal{N}(0, \sigma^2)$
+
+### Residual Vector and RSS
+
+$$
+\mathbf{e}(\boldsymbol{\beta}) = \mathbf{Y} - \mathbf{X}\boldsymbol{\beta}
+$$
+$$
+\text{RSS}(\boldsymbol{\beta}) = \mathbf{e}^\top \mathbf{e}
+$$
+پس در این صورت ای میشه یه وکتور یک در یک یا به عبارتی یک عدد پس ارور ما میشه یه عدد .
+
+### Normal Equations and Solution
+
+Minimizing RSS gives:
+$$
+\frac{\partial \text{RSS}}{\partial \boldsymbol{\beta}} = -2\mathbf{X}^\top \mathbf{Y} + 2\mathbf{X}^\top \mathbf{X} \boldsymbol{\beta} = 0
+$$
+
+Solving yields the **ordinary least squares (OLS)** estimator:
+$$
+\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y}
+$$
+
+> **Note**: This requires $\mathbf{X}^\top \mathbf{X}$ to be invertible (i.e., full column rank).
+
+---
+
+## Error Estimation and Uncertainty
+
+### Unbiased Estimate of $\sigma^2$
+
+**Exercise 1**: Show that
+$$
+\hat{\sigma}^2 = \frac{\text{RSS}(\hat{\boldsymbol{\beta}})}{n - p}
+$$
+is an unbiased estimator of $\sigma^2$, assuming $\varepsilon_i \overset{\text{iid}}{\sim} \mathcal{N}(0, \sigma^2)$.
+
+> **Explanation**: The denominator $n - p$ accounts for the $p$ estimated parameters (degrees of freedom correction).
+
+### Distribution of RSS
+
+If $\sigma^2$ is known, then:
+$$
+\frac{\text{RSS}(\hat{\boldsymbol{\beta}})}{\sigma^2} \sim \chi^2_{n - p}
+$$
+
+This underpins hypothesis tests and confidence intervals.
+
+> **Comment from slides**: *"The nightmare of 'model the uncertainty'"* — highlights that quantifying uncertainty (not just prediction) is often the hardest part in scientific applications like HEP.
+
+---
+
+## Generalized Least Squares (Weighted Case)
+
+**Exercise 2**: Starting from the weighted residual sum of squares:
+$$
+\text{RSS}_\Sigma(\boldsymbol{\beta}) = \mathbf{e}^\top \Sigma^{-1} \mathbf{e}
+$$
+show that the minimizer is:
+$$
+\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \Sigma^{-1} \mathbf{X})^{-1} \mathbf{X}^\top \Sigma^{-1} \mathbf{Y}
+$$
+
+> **Explanation**: This is the **Generalized Least Squares (GLS)** estimator, used when errors have known covariance $\Sigma$ (e.g., heteroscedastic or correlated errors). OLS is recovered when $\Sigma = \sigma^2 I$.
+
+---
+
+## Challenges
+
+> **"How to generalize to cover more complicated functions?"**
+
+Linear models are limited to linear relationships in the parameters. Real-world data often require:
+- Nonlinear basis expansions (polynomials, splines)
+- Kernel methods
+- Neural networks
+- Regularization (ridge, lasso) for high-dimensional settings
+
+In HEP, linear regression is often a starting point before applying more flexible (but less interpretable) models.
+
+---
+# Session 9: Neural Networks  
+**AI-Driven High Energy Physics (HEP)**  
+*S. A. Fard – School of Physics (IPM)*
+
+## References
+1. James, Gareth, et al. *An Introduction to Statistical Learning: With Applications in Python* (2023)  
+2. Hastie, Trevor, et al. *The Elements of Statistical Learning: Data Mining, Inference, and Prediction* (2009)  
+3. Bishop, Christopher M. *Pattern Recognition and Machine Learning* (2006)  
+4. Chollet, François. *Deep Learning with Python* (2021)  
+5. Shalev-Shwartz, Shai, and Shai Ben-David. *Understanding Machine Learning: From Theory to Algorithms* (2014)
+
+---
+
+## Motivation
+
+> **Recall the challenge from Session 8**:  
+> *"How to generalize linear regression to cover more complicated (nonlinear) functions?"*
+
+Goals:
+- Find optimal values for model parameters.
+- Extend modeling capacity beyond linear relationships.
+
+> **Explanation**: Linear models cannot capture complex patterns (e.g., interactions, nonlinearities). Neural networks address this through composition of simple nonlinear transformations.
+
+---
+
+## Optimization: From Linear Regression to Gradient-Based Learning
+
+Consider a simple linear model:
+$$
+y = a x + b
+$$
+
+### Loss Function (Squared Error)
+$$
+L = \sum_i (y_i - a x_i - b)^2
+$$
+
+This measures how poorly the current parameters $(a, b)$ fit the data.
+
+photo of gradiant decend
+
+> **Note**: Minimizing this loss is equivalent to ordinary least squares (OLS) in linear regression—but now we’ll use iterative optimization instead of a closed-form solution.
+
+---
+
+## Gradient Descent
+
+Update rules:
+$$
+a_{\text{new}} = a_{\text{old}} - \eta \frac{\partial L}{\partial a_{\text{old}}}, \quad
+b_{\text{new}} = b_{\text{old}} - \eta \frac{\partial L}{\partial b_{\text{old}}}
+$$
+
+- $\eta$: **learning rate** (step size controlling how fast we update parameters)
+- $\frac{\partial L}{\partial a}, \frac{\partial L}{\partial b}$: gradients indicating the direction of steepest increase in loss
+
+> **Example given in slides**:  
+> Data: $(x_1=1, y_1=1), (x_2=2, y_2=2), (x_3=3, y_3=2)$  
+> Start with $a=1, b=1$, then iteratively update using gradient descent.
+
+---
+
+## Stochastic Gradient Descent (SGD)
+
+Instead of computing gradients over the **entire dataset**, SGD uses:
+- A **single data point** (pure stochastic), or
+- A **mini-batch** (small random subset)
+
+Benefits:
+- Faster per-iteration updates
+- Can escape local minima due to noise
+- Scales to large datasets
+
+> **Note**: Most deep learning uses mini-batch SGD. Advanced variants (e.g., **Adam**, RMSProp) adapt the learning rate per parameter.
+
+---
+
+## Generalization: Adding Complexity
+
+### 1. **More Features (Higher Dimensions)**
+$$
+y = a_1 x_1 + a_2 x_2 + b
+$$
+Extends to multivariate linear models (as in multiple linear regression).
+
+### 2. **Capturing Non-Linearity**
+Apply a **nonlinear activation function** $A(\cdot)$:
+$$
+y = A(a_1 x_1 + a_2 x_2 + b)
+$$
+که اینجا ای  یه تابع هست به اسم اکتیویشن فانشکن
+Common activation functions:
+- **Heaviside step**: binary threshold (rarely used in practice)
+- **Sigmoid**: $\sigma(z) = \frac{1}{1 + e^{-z}}$ → outputs in $(0,1)$; useful for probability-like outputs
+- **ReLU (Rectified Linear Unit)**: $\text{ReLU}(z) = \max(0, z)$  
+  - Simple derivative
+  - Fast computation
+  - Avoids vanishing gradients (compared to sigmoid)
+
+> **Explanation**: Activation functions introduce nonlinearity, enabling neural networks to approximate arbitrary continuous functions (Universal Approximation Theorem).
+photo of generalization 1
+photo of generalozation
+---
+
+## Building Deeper Models: Hidden Layers
+
+Example with two hidden units:
+- Hidden unit 1: $z_1 = a_{11} x_1 + a_{12} x_2 + b_1$
+- Hidden unit 2: $z_2 = a_{21} x_1 + a_{22} x_2 + b_2$
+- Output: $y = A_1(z_1) + A_2(z_2) + b_3$
+
+> **Slide example values**:
+> ```
+> a11 = a12 = 1,  a21 = -1, a22 = 1
+> b1 = b2 = b3 = 0
+> A1 = 1, A2 = -1
+> ```
+
+This simple network can already represent piecewise-linear functions (e.g., a "V" shape), which a single linear model cannot.
+
+> **Key idea**: By stacking layers of such units, neural networks build **hierarchical representations** of data—starting from simple features to complex abstractions.
+
+---
+
+## Neural Network Architecture
+
+A typical feedforward neural network consists of:
+- **Input layer**: raw features (e.g., $x_1, x_2$)
+- **Hidden layer(s)**: intermediate representations (with activation functions)
+- **Output layer**: final prediction (e.g., class probability or regression value)
+
+> **Note**: Despite the name, the "network" is just a composition of parametric functions:
+> $$
+> \text{Output} = f_L \circ f_{L-1} \circ \cdots \circ f_1(\text{Input})
+> $$
+
+---
+
+## Softmax: For Multi-Class Classification
+
+Given a vector of **logits** (unnormalized scores) $\mathbf{z} = [z_1, z_2, \dots, z_C]$ for $C$ classes:
+
+$$
+\text{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^C e^{z_j}}
+$$
+
+Properties:
+- Outputs are **positive** and **sum to 1** → can be interpreted as **class probabilities**
+- Amplifies larger logits (due to exponential)
+- Logits $z_i$ can be any real number (positive or negative)
+
+> **Physics connection**: This is mathematically identical to the **Boltzmann (Gibbs) distribution** in statistical mechanics, where $z_i$ plays the role of negative energy $(-E_i / kT)$.
+
+---
+
+## Cross-Entropy Loss
+
+For classification with true labels $y_{n,i} \in \{0,1\}$ (one-hot encoded) and predicted probabilities $\hat{y}_{n,i} = \text{softmax}(z_i)$, the loss is:
+
+$$
+L = -\frac{1}{N} \sum_{n=1}^N \sum_{i=1}^C y_{n,i} \log(\hat{y}_{n,i})
+$$
+
+> **Exercise 3 (from slides)**: *Prove that, assuming the Boltzmann distribution, this loss function arises naturally as the negative log-likelihood.*
+
+> **Explanation**: Minimizing cross-entropy is equivalent to maximizing the likelihood of the correct class under the softmax model—standard in multi-class deep learning.
+
+---
+
+## Summary
+
+- Neural networks generalize linear models by:
+  - Using **nonlinear activation functions** (e.g., ReLU, sigmoid)
+  - Stacking **layers** to learn hierarchical features
+- Optimization is done via **(stochastic) gradient descent**
+- For classification, **softmax + cross-entropy** form a probabilistically grounded output layer
+- Strong connections exist between machine learning and physics (e.g., Boltzmann distribution ↔ softmax)
+---
+# Session 10: Neural Networks II  
+**AI-Driven High Energy Physics (HEP)**  
+*S. A. Fard – School of Physics (IPM)*
+
+## References
+1. Bishop, Christopher M., and Hugh Bishop. *Deep Learning: Foundations and Concepts*. Springer Nature, 2023.  
+2. [Optimizing Gradient Descent – Sebastian Ruder](https://www.ruder.io/optimizing-gradient-descent/)
+
+---
+
+## Extensions to Neural Networks
+
+Neural networks can map:
+- Inputs of shape $(n, k)$ → Outputs of shape $(n, 1)$ (e.g., regression)
+- Or $(n, k)$ → $(n, k')$ (e.g., multi-output regression or classification)
+
+> **Note**: Here, $n$ is the batch size (number of samples), and $k$, $k'$ are input/output feature dimensions.
+
+---
+
+## Deep Neural Networks (Deep Learning)
+
+- **Deep NNs** stack many layers between input and output.
+- Each layer transforms the representation, enabling learning of **hierarchical features**.
+- Data flows **forward** through the network: this is called a **feedforward architecture**.
+
+> **Key idea**: Depth allows the network to automatically **extract features** from raw inputs—critical when inputs have complex structure (e.g., images, particle jets, time series).
+
+---
+
+## Fundamental Computational Unit: The Neuron
+
+A single neuron computes:
+$$
+H = A(\mathbf{a}^\top \mathbf{X} + b)
+$$
+
+Where:
+- $\mathbf{X} \in \mathbb{R}^m$: input vector ($x_1, x_2, \dots, x_m$)
+- $\mathbf{a} \in \mathbb{R}^m$: weight vector ($a_1, a_2, \dots, a_m$)
+- $b \in \mathbb{R}$: bias term
+- $A(\cdot)$: activation function (e.g., ReLU, sigmoid)
+
+This is the core building block of all feedforward networks.
+
+---
+
+## Optimization: Backpropagation
+
+- **Forward pass**: Compute predictions by propagating input through layers.
+- **Backward pass**: Use **error backpropagation** to compute gradients of the loss w.r.t. all parameters.
+  - Information flows **backward** from output to input.
+  - Enables efficient gradient computation via the chain rule.
+
+Parameter update (e.g., via SGD):
+$$
+\mathbf{a}_{\text{new}} = \mathbf{a}_{\text{old}} - \eta \nabla_{\mathbf{a}} \mathcal{L}
+$$
+
+Regularized loss example:
+$$
+\mathcal{L} \sim \sum \left[\tilde{y} - f(\mathbf{x}; \mathbf{a})\right]^2 + \lambda \|\mathbf{a}\|^2
+$$
+> This is **ridge (L2) regularization**, which penalizes large weights to reduce overfitting.
+
+---
+
+## Optimization Algorithms: Two Main Approaches
+
+### 1. **Search-Based Methods**
+- Explore the loss landscape **without derivatives** (e.g., genetic algorithms, random search).
+- Useful when the function is non-differentiable or noisy.
+- Generally slower and less efficient for smooth, high-dimensional problems.
+
+### 2. **Gradient-Based Methods**
+- Use derivative information to move **opposite the gradient** (direction of steepest ascent).
+- Update rule (1D example):
+  $$
+  a_{\text{new}} = a_{\text{old}} - \eta f'(a_{\text{old}})
+  $$
+- Justified by Taylor expansion:
+  $$
+  f(a_{\text{new}}) \approx f(a_{\text{old}}) + f'(a_{\text{old}})(a_{\text{new}} - a_{\text{old}})
+  $$
+- **Requirement**: The loss must be differentiable (or sub-differentiable).
+
+> **Note**: Nearly all modern deep learning relies on gradient-based optimization due to its scalability and efficiency.
+
+---
+
+## Automatic Differentiation in PyTorch
+
+- PyTorch provides **Autograd**, an automatic differentiation engine.
+- Tracks operations on tensors with `requires_grad=True`.
+- Computes gradients via `.backward()`.
+
+> **Typical workflow**:
+> 1. Define model and loss
+> 2. Forward pass → compute loss
+> 3. Call `loss.backward()` → computes gradients
+> 4. Update parameters manually or via optimizer (e.g., `torch.optim.Adam`)
+
+> **Why it matters**: Autograd eliminates the need to derive and code gradients by hand—essential for complex models.
+
+---
+
+## Simple Neural Network in PyTorch
+
+While the slide only shows placeholder visuals, a minimal PyTorch NN typically includes:
+- `torch.nn.Module` subclass
+- Layer definitions (e.g., `nn.Linear`)
+- Forward method
+- Loss function and optimizer
+
+> Example concepts illustrated in class likely include:
+> - Building a 1- or 2-hidden-layer network
+> - Training loop with forward/backward passes
+> - Using `torch.autograd` for gradient computation
+
+---
+
+## Summary
+
+- **Deep neural networks** generalize shallow models by stacking layers to learn rich representations.
+- The **neuron** is a linear transformation + nonlinear activation.
+- **Backpropagation** efficiently computes gradients for millions of parameters.
+- **Optimization** relies on gradient-based methods, enabled by frameworks like **PyTorch Autograd**.
+- This foundation supports applications in HEP—from jet tagging to simulation-based inference.
