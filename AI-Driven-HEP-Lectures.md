@@ -988,7 +988,53 @@ $$
 Two standard approaches:
 - **Least Squares Estimation (LSE)**: Minimizes the sum of squared residuals.
 - **Maximum Likelihood Estimation (MLE)**: Equivalent to LSE under Gaussian noise.
-تفاوت لیست اسکور و ماکسموم لایکلیهود چیه  دقیقا؟
+
+### Difference Between Least Squares and Maximum Likelihood
+
+Least Squares (LS) and Maximum Likelihood Estimation (MLE) are two fundamental parameter estimation methods in statistics that, while sometimes yielding identical results, have different underlying philosophies and applications.
+
+#### Least Squares Method
+
+The least squares method is an estimation approach that aims to **minimize the sum of squared errors**—the difference between observed and predicted values. In this method, parameters are chosen to minimize the quantity:
+
+$$
+\sum_{i=1}^{N} (y_i - \hat{y}_i)^2
+$$
+
+where:
+- $y_i$ represents observed values,
+- $\hat{y}_i$ represents predicted values.
+
+This method:
+- Does **not require assumptions** about any specific probability distribution,
+- Focuses purely on minimizing **geometric distance** (in the space of outputs),
+- Is traditionally associated with **regression line fitting**,
+- Is **computationally simple** and historically easier to calculate by hand.
+
+#### Maximum Likelihood Estimation
+
+Maximum Likelihood Estimation operates by **maximizing the probability** (likelihood) of observing the given data under a **specified probability distribution**. This method:
+- Requires defining a **probabilistic model** for the data (e.g., Gaussian, Poisson),
+- Selects parameters that **maximize the likelihood function** $ \mathcal{L}(\theta \mid \text{data}) $.
+
+MLE is **asymptotically optimal**: as the sample size grows large, it achieves the lowest possible variance among consistent estimators (under regularity conditions).
+
+#### Relationship and Key Differences
+
+- **Equivalence under Gaussian noise**:  
+  Least squares estimation is **equivalent to MLE** when the errors are assumed to follow a **normal (Gaussian) distribution** with **zero mean and constant variance** ($ \varepsilon_i \sim \mathcal{N}(0, \sigma^2) $).
+
+- **Philosophical difference**:  
+  - **Least squares** is a **geometric/deterministic** method focused on minimizing prediction error.
+  - **Maximum likelihood** is a **probabilistic/statistical** method that requires a **distributional assumption**.
+
+- **Performance considerations**:  
+  - For **small sample sizes**, MLE can outperform LS **if the distributional assumption is correct**.
+  - For **non-normal errors** or **heteroscedasticity**, MLE (with an appropriate likelihood model) is more **flexible and robust** than LS.
+  - LS remains popular due to its **simplicity and computational efficiency**, even when distributional assumptions are not strictly met.
+
+> **Summary**: LS is distribution-free and intuitive; MLE is model-based and statistically principled. They coincide under Gaussian errors—but diverge in philosophy and applicability beyond that.
+
 ### Residual Sum of Squares (RSS)
 
 $$
@@ -1034,7 +1080,7 @@ $$
 $$
 \text{RSS}(\boldsymbol{\beta}) = \mathbf{e}^\top \mathbf{e}
 $$
-پس در این صورت ای میشه یه وکتور یک در یک یا به عبارتی یک عدد پس ارور ما میشه یه عدد .
+
 
 ### Normal Equations and Solution
 
@@ -1145,7 +1191,9 @@ $$
 
 This measures how poorly the current parameters $(a, b)$ fit the data.
 
-photo of gradiant decend
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/neural_linear_optimization.png?raw=true" alt="Linear Optimization" width="600"/>
+</center>
 
 > **Note**: Minimizing this loss is equivalent to ordinary least squares (OLS) in linear regression—but now we’ll use iterative optimization instead of a closed-form solution.
 
@@ -1155,8 +1203,8 @@ photo of gradiant decend
 
 Update rules:
 $$
-a_{\text{new}} = a_{\text{old}} - \eta \frac{\partial L}{\partial a_{\text{old}}}, \quad
-b_{\text{new}} = b_{\text{old}} - \eta \frac{\partial L}{\partial b_{\text{old}}}
+a_{\text{new}} = a_{\text{old}} - \eta \frac{\partial L(a_{\text{old}},b_{\text{old}})}{\partial a_{\text{old}}}, \quad
+b_{\text{new}} = b_{\text{old}} - \eta \frac{\partial L(a_{\text{old}},b_{\text{old}})}{\partial b_{\text{old}}}
 $$
 
 - $\eta$: **learning rate** (step size controlling how fast we update parameters)
@@ -1196,7 +1244,8 @@ Apply a **nonlinear activation function** $A(\cdot)$:
 $$
 y = A(a_1 x_1 + a_2 x_2 + b)
 $$
-که اینجا ای  یه تابع هست به اسم اکتیویشن فانشکن
+
+* In which here A is the **activation** function
 Common activation functions:
 - **Heaviside step**: binary threshold (rarely used in practice)
 - **Sigmoid**: $\sigma(z) = \frac{1}{1 + e^{-z}}$ → outputs in $(0,1)$; useful for probability-like outputs
@@ -1208,6 +1257,15 @@ Common activation functions:
 > **Explanation**: Activation functions introduce nonlinearity, enabling neural networks to approximate arbitrary continuous functions (Universal Approximation Theorem).
 photo of generalization 1
 photo of generalozation
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/neural_generalization.png?raw=true" alt="Generailization of nn" width="600"/>
+</center>
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/neutal_relu_compare.png?raw=true" alt="Relu" width="600"/>
+</center>
+
 ---
 
 ## Building Deeper Models: Hidden Layers
@@ -1228,6 +1286,9 @@ This simple network can already represent piecewise-linear functions (e.g., a "V
 
 > **Key idea**: By stacking layers of such units, neural networks build **hierarchical representations** of data—starting from simple features to complex abstractions.
 
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/neural_generalization_2.png?raw=true" alt="Deeper Model" width="600"/>
+</center>
 ---
 
 ## Neural Network Architecture
@@ -1258,6 +1319,10 @@ Properties:
 - Logits $z_i$ can be any real number (positive or negative)
 
 > **Physics connection**: This is mathematically identical to the **Boltzmann (Gibbs) distribution** in statistical mechanics, where $z_i$ plays the role of negative energy $(-E_i / kT)$.
+
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/neural_network.png.png?raw=true" alt="Neural Network" width="600"/>
+</center>
 
 ---
 
@@ -1302,6 +1367,9 @@ Neural networks can map:
 
 > **Note**: Here, $n$ is the batch size (number of samples), and $k$, $k'$ are input/output feature dimensions.
 
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/extension_to_nn.png?raw=true" alt="extension to nn" width="600"/>
+</center>
 ---
 
 ## Deep Neural Networks (Deep Learning)
@@ -1311,6 +1379,7 @@ Neural networks can map:
 - Data flows **forward** through the network: this is called a **feedforward architecture**.
 
 > **Key idea**: Depth allows the network to automatically **extract features** from raw inputs—critical when inputs have complex structure (e.g., images, particle jets, time series).
+
 
 ---
 
@@ -1327,7 +1396,13 @@ Where:
 - $b \in \mathbb{R}$: bias term
 - $A(\cdot)$: activation function (e.g., ReLU, sigmoid)
 
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/single_neuron.png?raw=true" alt="Structure of single Neuron" width="600"/>
+</center>
+
 This is the core building block of all feedforward networks.
+
+A common classroom example is the **Fourier transform**, which demonstrates that any function can be expanded in terms of **sine** and **cosine** basis functions. In this analogy, the sine and cosine functions serve as activation functions. The equation above performs essentially the same operation—it decomposes functions using a set of basis functions, similar to how Fourier analysis expands signals into sinusoidal components.
 
 ---
 
@@ -1349,6 +1424,9 @@ $$
 $$
 > This is **ridge (L2) regularization**, which penalizes large weights to reduce overfitting.
 
+<center>
+  <img src="https://github.com/Shayan-Zavvarei/AI-Driven-High-Energy-Physics/blob/main/photos/nn_comp_unit.png?raw=true" alt="NN fundumental computation uni" width="600"/>
+</center>
 ---
 
 ## Optimization Algorithms: Two Main Approaches
@@ -1365,9 +1443,15 @@ $$
   a_{\text{new}} = a_{\text{old}} - \eta f'(a_{\text{old}})
   $$
 - Justified by Taylor expansion:
-  $$
-  f(a_{\text{new}}) \approx f(a_{\text{old}}) + f'(a_{\text{old}})(a_{\text{new}} - a_{\text{old}})
-  $$
+
+$[
+f(a_{new}) = f(a_{old}) + f'(a_{old})(a_{new} - a_{old}) + \frac{1}{2}f''(a_{old})(a_{new} - a_{old})^2
+]$
+
+$[
+f(a_{new}) - f(a_{old}) \leq \eta(f'(a_{old}))^2\left(\frac{\eta}{2}f'(a_{old}) - 1\right)
+]$
+
 - **Requirement**: The loss must be differentiable (or sub-differentiable).
 
 > **Note**: Nearly all modern deep learning relies on gradient-based optimization due to its scalability and efficiency.
@@ -1404,7 +1488,84 @@ While the slide only shows placeholder visuals, a minimal PyTorch NN typically i
 > - Using `torch.autograd` for gradient computation
 
 ---
+## Derivative in pytorch
+```python
+x = torch.tensor(2.0, requires_grad=True)
+y = (x ** 2 + 3* x + 1)
+y.backward()
+print(x.grad)
+```
+### General form of the derivatuion in PyTorch 
+```python
+def forward(x1,x2):
+  return x1 * x2 + x2
 
+def compute_gradiants(x1_value, x2_value):
+  x1 = torch.tensor(x1_value, requires_grad=True)
+  x2 = torch.tensor(x2_value, requires_grad=True)
+
+  # --- Forward : z = x1 *x2 + x2
+  z = forward(x1,x2)
+
+  # Backward : Compute gradiants
+  z.backward()
+```
+
+
+## Simple NN in PyTorch 
+```python
+class SimpleNN(nn.Module):
+  def __init__(self, input_size, hidden_size, output_size):
+    super(simpleNN, self).__init__()
+    self.hidden = nn.Linear(input_size, hidden_size)
+    self.relu = nn.ReLU()
+    self.output = nn.Linear(hidden_size, output_size)
+
+  def forward(self, x):
+    x = self.hidden(x)
+    x = self.relu(x)
+    x = self.output(x)
+    return x
+
+model = simpleNN(input_size = 2, hidden_size = 4, output_size = 2)
+criterion = nn.MSELoss()
+optimizer = optim.SGD(model.parameters(), lr= 0.1)
+#above, lr stands for Learning Rate
+
+x = torch.tensor([[1.0, 2.0], [2.0,3.0], [3.0,4.0]], requires_grad = False)
+y = torch.tensor([[3.0,4.0], [5.0,6.0], [7.0,8.0]])
+
+# Now we begin the learning loop
+for epoch in range (1000):
+  # Forward pass 
+  y_pred = model(x)
+  loss = criterion(y_pred, y)
+
+  # Backward pass
+  optimizer.zero_grad()
+  loss.backward()
+  optimizer.step()
+
+# --- Fix the weights and biased ---
+with totch.no_grad():
+
+  model.hidden.weight.copy_(torch.tensor([[0.1,0.2].[0.3,0.4],[0.5,0.6],[0.7,0.8]]))
+  
+  # Output layer
+  model.output.weight.copy_(torch.tensor([0.2,0.3,0.4,0.5], [0.5,0.4,0.3,0.2]))
+  model.output.bias.copy_(torch.tensor([0.1, -0.1]))
+
+x = torch.tensor([[1.0,2.0], [2.0,3.0],[3.0,4.0]]), requires_grad = True)
+
+# --- Forward pass ---
+y = model(x)
+
+# --- Backward pass ---
+grad_outputs = torch.tensor([[1.0, 0.0], [0.0,0.1], [1.0,1.0]], dtype = torch.float32)
+
+# --- Compute gradiants of y with respect to x 
+gradiants = torch.autograd.grad(outputs = y, inputs = x, grad_outputs = grad_outputs)
+```
 ## Summary
 
 - **Deep neural networks** generalize shallow models by stacking layers to learn rich representations.
